@@ -8,11 +8,13 @@ import (
 func main() {
 	api := GetTwitterApi()
 
-	text := "Hello twitter api(GO lang)"
-	tweet, err := api.PostTweet(text, nil)
+	dm, err := api.GetDirectMessages(nil)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Print(tweet.Text)
+	for i, v := range dm {
+		fmt.Print(i)
+		fmt.Println(v)
+	}
 }
