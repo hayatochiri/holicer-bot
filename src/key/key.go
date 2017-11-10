@@ -1,13 +1,13 @@
 package key
 
 import (
+	"fmt"
 	"github.com/ChimeraCoder/anaconda"
-	. "os"
 )
 
-func GetTwitterApi() *anaconda.TwitterApi {
-	anaconda.SetConsumerKey(Getenv("TWITTER_CONSUMER_KEY"))
-	anaconda.SetConsumerSecret(Getenv("TWITTER_CONSUMER_SECRET"))
-	api := anaconda.NewTwitterApi(Getenv("TWITTER_ACCESS_TOKEN"), Getenv("TWITTER_ACCESS_TOKEN_SECRET"))
+func GetTwitterApi(consumer_key, consumer_secret, access_token, access_secret string) *anaconda.TwitterApi {
+	anaconda.SetConsumerKey(consumer_key)
+	anaconda.SetConsumerSecret(consumer_secret)
+	api := anaconda.NewTwitterApi(access_token, access_secret)
 	return api
 }
