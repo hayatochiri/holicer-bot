@@ -71,3 +71,64 @@
     * お店ID(MAY)
     * グループID(MAY)
     * ユーザーID(MAY)
+
+## Database
+
+### master
+* db_version
+
+### tavern
+* id
+* name_jp
+* name_en
+* is_removed (boolean)
+
+### gropu
+* id
+* uuid
+* name_jp
+* name_en
+* started-time
+* tavern-id
+* total-price
+* tax-rate ( float or null:tax included )
+* cleard-time
+
+### user
+* id
+* twitter-id
+* e-mail
+* name
+* avator
+* status { leave, join, ban }
+* group-id (when status:join)
+
+### drink
+* id
+* tavern-id
+* name_jp
+* name_en
+* price
+* tax-rate ( float or null:tax included )
+* is_removed (boolean)
+
+### user-log
+* id
+* user-id
+* group-id
+* status { join, leave, ban, unban }
+* timestamp
+
+### leave-log
+* id
+* user-log-id
+* pay (integer or null:credit)
+
+### order-log
+* id
+* user-id
+* group-id
+* drink-id
+* split (integer 1..)
+* status { request, orderd, removed }
+* timestamp
