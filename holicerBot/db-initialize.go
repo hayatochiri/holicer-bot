@@ -8,9 +8,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func init() {
 	os.Create("./holicer-bot.db")
-
+func Initialize() {
 	var db *sql.DB
 	var err error
 

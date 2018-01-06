@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"./cmd"
+	"./holicerBot"
 )
 
 func main() {
@@ -12,4 +13,6 @@ func main() {
 		fmt.Println(err)
 		os.Exit(-1)
 	}
+
+	holicerBot.Initialize()
 }
