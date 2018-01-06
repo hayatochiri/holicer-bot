@@ -40,6 +40,9 @@ func createDB(db *sql.DB) error {
 			id         integer primary key,
 			db_version integer not null
 		);
+
+		insert into master (id, db_version)
+		select 1, 0 where (select count(*) from master) = 0;
 	`
 
 	_, err = db.Exec(query)
