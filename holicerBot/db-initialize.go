@@ -37,7 +37,8 @@ func createDB(db *sql.DB) error {
 
 	query := `
 		create table if not exists master (
-			db_version string
+			id         integer primary key,
+			db_version integer not null
 		);
 	`
 
