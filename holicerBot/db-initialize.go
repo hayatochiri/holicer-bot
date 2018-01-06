@@ -24,6 +24,12 @@ func Initialize() {
 		os.Exit(-1)
 	}
 
+	err = updateDB(db)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+
 	db.Close()
 }
 
@@ -53,6 +59,26 @@ func createDB(db *sql.DB) error {
 	err = tx.Commit()
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func updateDB(db *sql.DB) error {
+	var db_version int
+	query := `select db_version from master where id = 1`
+
+	for already_updated := false; already_updated == false; {
+
+		if err := db.QueryRow(query).Scan(&db_version); err != nil {
+			return err
+		}
+
+		switch db_version {
+		default:
+			already_updated = true
+		}
+
 	}
 
 	return nil
