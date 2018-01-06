@@ -28,12 +28,15 @@ func Initialize() {
 }
 
 func createDB(db *sql.DB) error {
+	var err error
+
 	query := `
 		create table if not exists master (
 			db_version string
 		);
 	`
-	_, err := db.Exec(query)
+
+	_, err = db.Exec(query)
 	if err != nil {
 		return err
 	}
