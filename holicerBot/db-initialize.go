@@ -18,13 +18,7 @@ func Initialize() {
 		os.Exit(-1)
 	}
 
-	err = createDB(db)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(-1)
-	}
-
-	err = updateDB(db)
+	err = initializeDB(db)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
