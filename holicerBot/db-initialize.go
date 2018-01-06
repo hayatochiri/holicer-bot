@@ -33,6 +33,22 @@ func Initialize() {
 	db.Close()
 }
 
+func initializeDB(db *sql.DB) error {
+	var err error
+
+	err = createDB(db)
+	if err != nil {
+		return err
+	}
+
+	err = updateDB(db)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func createDB(db *sql.DB) error {
 	var err error
 
