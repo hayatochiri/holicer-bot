@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"./cmd"
-	"./holicerBot"
+	"github.com/hayatochiri/holicer-bot/cmd"
+	"github.com/hayatochiri/holicer-bot/holicerBot"
 )
 
 func main() {
