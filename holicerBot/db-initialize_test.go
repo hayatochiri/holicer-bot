@@ -101,3 +101,31 @@ func TestInitializeDB(t *testing.T) {
 		t.Fatalf("Error occurred when initializeDB() (%v)", err)
 	}
 }
+
+func TestCreateDB(t *testing.T) {
+	db := openDBonMemory(t)
+	defer db.Close()
+
+	var query string
+
+	if err := createDB(db); err != nil {
+		t.Fatalf("Error occurred when createDB() (%v)", err)
+	}
+
+	query = `PRAGMA table_info(master);`
+	rows, err := db.Query(query)
+	if err != nil {
+		t.Fatalf("Error occurred when db.Query(\"%v\") (%v)", query, err)
+	}
+
+	t.Log("Scan 'master' table")
+	tableExpect(
+		t,
+		rows,
+		map[string]tableDefinitions{
+			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`db_version`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+		},
+	)
+
+}
