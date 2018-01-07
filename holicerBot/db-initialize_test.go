@@ -16,3 +16,12 @@ func openDBonMemory(t *testing.T) *sql.DB {
 
 	return db
 }
+
+func TestInitializeDB(t *testing.T) {
+	db := openDBonMemory(t)
+	defer db.Close()
+
+	if err := initializeDB(db); err != nil {
+		t.Fatalf("Error occurred when initializeDB() (%v)", err)
+	}
+}
