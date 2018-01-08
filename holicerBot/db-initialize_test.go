@@ -30,7 +30,7 @@ func openDBonMemory(t *testing.T) *sql.DB {
 	return db
 }
 
-func tableExpect(t *testing.T, rows *sql.Rows, expect_definitions map[string]tableDefinitions) error {
+func tableExpect(t *testing.T, db *sql.DB, table_name string, expect_definitions map[string]tableDefinitions) error {
 	var actual_cid int
 	var actual_name string
 	var actual_type string
@@ -41,6 +41,13 @@ func tableExpect(t *testing.T, rows *sql.Rows, expect_definitions map[string]tab
 	field_existence := make(map[string]bool)
 	for k := range expect_definitions {
 		field_existence[k] = false
+	}
+
+	t.Log(`Scan '` + table_name + `' table`)
+	query := `PRAGMA table_info(` + table_name + `);`
+	rows, err := db.Query(query)
+	if err != nil {
+		t.Fatalf("Error occurred when db.Query(\"%v\") (%v)", query, err)
 	}
 
 	for rows.Next() {
@@ -106,22 +113,12 @@ func TestCreateDB(t *testing.T) {
 	db := openDBonMemory(t)
 	defer db.Close()
 
-	var query string
-
 	if err := createDB(db); err != nil {
 		t.Fatalf("Error occurred when createDB() (%v)", err)
 	}
 
-	query = `PRAGMA table_info(master);`
-	rows, err := db.Query(query)
-	if err != nil {
-		t.Fatalf("Error occurred when db.Query(\"%v\") (%v)", query, err)
-	}
-
-	t.Log("Scan 'master' table")
 	tableExpect(
-		t,
-		rows,
+		t, db, `master`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`db_version`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
