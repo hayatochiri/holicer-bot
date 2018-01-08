@@ -89,9 +89,13 @@ func updateDB(db *sql.DB) error {
 
 		switch db_version {
 		case 0:
-			updateDBv1(db)
+			err = updateDBv1(db)
 		default:
 			already_updated = true
+			err = nil
+		}
+		if err != nil {
+			return err
 		}
 
 	}
