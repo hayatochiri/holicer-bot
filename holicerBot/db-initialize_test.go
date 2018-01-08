@@ -166,6 +166,11 @@ func TestCreateDB(t *testing.T) {
 		},
 	)
 
+	expectTablesList(
+		t, db,
+		[]string{`master`},
+	)
+
 }
 
 func TestUpdateDBv1(t *testing.T) {
@@ -179,6 +184,11 @@ func TestUpdateDBv1(t *testing.T) {
 	if err := updateDBv1(db); err != nil {
 		t.Fatalf("Error occurred when updateDB() (%v)", err)
 	}
+
+	expectTablesList(
+		t, db,
+		[]string{`master`, `taverns`, `groups`, `users`, `menus`, `users_log`, `leave_log`, `orders_log`},
+	)
 
 	tableExpect(
 		t, db, `master`,
@@ -275,9 +285,6 @@ func TestUpdateDBv1(t *testing.T) {
 }
 
 func TestUpdateDB(t *testing.T) {
-	// TODO: 余計なテーブルが登録されていないかをチェックするテストを追加
-	// TODO: masterテーブルのdb_versionのバージョンをチェックするテストを追加
-
 	db := openDBonMemory(t)
 	defer db.Close()
 
@@ -288,6 +295,11 @@ func TestUpdateDB(t *testing.T) {
 	if err := updateDB(db); err != nil {
 		t.Fatalf("Error occurred when updateDB() (%v)", err)
 	}
+
+	expectTablesList(
+		t, db,
+		[]string{`master`, `taverns`, `groups`, `users`, `menus`, `users_log`, `leave_log`, `orders_log`},
+	)
 
 	tableExpect(
 		t, db, `master`,
