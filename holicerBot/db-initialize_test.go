@@ -126,3 +126,109 @@ func TestCreateDB(t *testing.T) {
 	)
 
 }
+
+func TestUpdateDB(t *testing.T) {
+	db := openDBonMemory(t)
+	defer db.Close()
+
+	if err := createDB(db); err != nil {
+		t.Fatalf("Error occurred when createDB() (%v)", err)
+	}
+
+	if err := updateDB(db); err != nil {
+		t.Fatalf("Error occurred when updateDB() (%v)", err)
+	}
+
+	tableExpect(
+		t, db, `master`,
+		map[string]tableDefinitions{
+			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`db_version`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `taverns`,
+		map[string]tableDefinitions{
+			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`name_jp`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`name_en`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`is_removed`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `groups`,
+		map[string]tableDefinitions{
+			`id`:           {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`uuid`:         {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`name_jp`:      {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`name_en`:      {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`started_time`: {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`tavern_id`:    {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`total_price`:  {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`tax_rate`:     {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`cleard_time`:  {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `users`,
+		map[string]tableDefinitions{
+			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`twitter_id`: {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`email`:      {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`name`:       {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`avator`:     {Type: `blob`, Notnull: FALSE, Dflt_value: ``},
+			`status`:     {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`group_id`:   {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `menus`,
+		map[string]tableDefinitions{
+			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`tavern_id`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`name_jp`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`name_en`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`price`:      {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`tax_rate`:   {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`is_removed`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `users_log`,
+		map[string]tableDefinitions{
+			`id`:        {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`user_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`group_id`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`status`:    {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`timestamp`: {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `leave_log`,
+		map[string]tableDefinitions{
+			`id`:          {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`user_log_id`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`pay`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+		},
+	)
+
+	tableExpect(
+		t, db, `orders_log`,
+		map[string]tableDefinitions{
+			`id`:        {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`user_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`group_id`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`menu_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`split`:     {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`status`:    {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`timestamp`: {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+		},
+	)
+
+}
