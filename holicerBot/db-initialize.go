@@ -61,7 +61,7 @@ func createDB(db *sql.DB) error {
 		select 1, 0 where (select count(*) from master) = 0;
 	`
 
-	_, err = db.Exec(query)
+	_, err = tx.Exec(query)
 	if err != nil {
 		return err
 	}
@@ -171,7 +171,7 @@ func updateDBv1(db *sql.DB) error {
 		);
 	`
 
-	_, err = db.Exec(query)
+	_, err = tx.Exec(query)
 	if err != nil {
 		return err
 	}
