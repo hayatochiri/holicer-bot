@@ -100,6 +100,47 @@ func tableExpect(t *testing.T, db *sql.DB, table_name string, expect_definitions
 	return nil
 }
 
+func expectTablesList(t *testing.T, db *sql.DB, expect_tables []string) error {
+	t.Log("Check if the tables matches the list %v", expect_tables)
+
+	query := `select name from sqlite_master where type='table';`
+	rows, err := db.Query(query)
+	if err != nil {
+		t.Fatalf("Error occurred when db.Query(\"%v\") (%v)", query, err)
+	}
+
+	table_existence := make(map[string]bool)
+	for _, table_name := range expect_tables {
+		table_existence[table_name] = false
+	}
+
+	// 'sqlite_sequence' テーブルはSQLite3が内部的に生成するため存在確認をtrueにする
+	table_existence[`sqlite_sequence`] = true
+
+	var table_name string
+	for rows.Next() {
+		rows.Scan(&table_name)
+
+		for _, expect := range expect_tables {
+			if expect == table_name {
+				table_existence[table_name] = true
+			}
+		}
+
+		if table_existence[table_name] == false {
+			t.Errorf("Unexpected table \"%v\" was found", table_name)
+		}
+	}
+
+	for table_name, exist := range table_existence {
+		if !exist {
+			t.Errorf("Table \"%v\" is missing", table_name)
+		}
+	}
+
+	return nil
+}
+
 func TestInitializeDB(t *testing.T) {
 	db := openDBonMemory(t)
 	defer db.Close()
