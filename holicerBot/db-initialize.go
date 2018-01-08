@@ -75,12 +75,15 @@ func createDB(db *sql.DB) error {
 }
 
 func updateDB(db *sql.DB) error {
+	var err error
+
 	var db_version int
 	query := `select db_version from master where id = 1`
 
 	for already_updated := false; already_updated == false; {
 
-		if err := db.QueryRow(query).Scan(&db_version); err != nil {
+		err = db.QueryRow(query).Scan(&db_version)
+		if err != nil {
 			return err
 		}
 
