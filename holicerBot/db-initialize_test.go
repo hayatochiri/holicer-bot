@@ -128,6 +128,9 @@ func TestCreateDB(t *testing.T) {
 }
 
 func TestUpdateDB(t *testing.T) {
+	// TODO: 余計なテーブルが登録されていないかをチェックするテストを追加
+	// TODO: masterテーブルのdb_versionのバージョンをチェックするテストを追加
+
 	db := openDBonMemory(t)
 	defer db.Close()
 
