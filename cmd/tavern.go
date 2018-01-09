@@ -9,6 +9,7 @@ var tavernCmd = &cobra.Command{
 	Short: "Operation on tavern.",
 	Long:  `Operation on tavern.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		cmd.Help()
 	},
 }
 
