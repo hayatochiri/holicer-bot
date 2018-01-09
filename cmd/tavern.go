@@ -13,6 +13,15 @@ var tavernCmd = &cobra.Command{
 	},
 }
 
+var tavernAddCmd = &cobra.Command{
+	Use:   "add",
+	Short: "Add tavern to database.",
+	Long:  `Add tavern to database.`,
+	Run: func(cmd *cobra.Command, args []string) {
+	},
+}
+
 func init() {
 	RootCmd.AddCommand(tavernCmd)
+	tavernCmd.AddCommand(tavernAddCmd)
 }
