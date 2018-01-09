@@ -4,6 +4,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type tavernAddOpts struct {
+	ja string
+	en string
+}
+
+var tavern_add_opts tavernAddOpts
+
 var tavernCmd = &cobra.Command{
 	Use:   "tavern",
 	Short: "Operation on tavern.",
@@ -22,6 +29,9 @@ var tavernAddCmd = &cobra.Command{
 }
 
 func init() {
+	tavernAddCmd.Flags().StringVarP(&tavern_add_opts.ja, "name-ja", "j", "", "Name of tavern(Japanese)")
+	tavernAddCmd.Flags().StringVarP(&tavern_add_opts.en, "name-en", "e", "", "Name of tavern(English)")
+
 	RootCmd.AddCommand(tavernCmd)
 	tavernCmd.AddCommand(tavernAddCmd)
 }
