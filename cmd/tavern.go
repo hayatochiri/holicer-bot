@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +28,10 @@ var tavernAddCmd = &cobra.Command{
 	Short: "Add tavern to database.",
 	Long:  `Add tavern to database.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if tavern_add_opts.ja == "" && tavern_add_opts.en == "" {
+			fmt.Fprintf(os.Stderr, "Japanese or English of tavern name is required.")
+			os.Exit(1)
+		}
 	},
 }
 
