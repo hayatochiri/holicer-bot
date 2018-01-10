@@ -30,6 +30,7 @@ var tavernAddCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if tavern_add_opts.ja == "" && tavern_add_opts.en == "" {
 			fmt.Fprintf(os.Stderr, "Japanese or English of tavern name is required.")
+			cmd.Help()
 			os.Exit(1)
 		}
 	},
