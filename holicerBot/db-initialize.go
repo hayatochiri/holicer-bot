@@ -8,8 +8,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var db *sql.DB
+
 func Initialize() {
-	var db *sql.DB
 	var err error
 
 	db, err = sql.Open("sqlite3", "./holicer-bot.db")
@@ -23,7 +24,9 @@ func Initialize() {
 		fmt.Println(err)
 		os.Exit(-1)
 	}
+}
 
+func Finalize() {
 	db.Close()
 }
 

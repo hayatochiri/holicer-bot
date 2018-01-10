@@ -15,4 +15,6 @@ func main() {
 	}
 
 	holicerBot.Initialize()
+
+	holicerBot.Finalize()
 }
