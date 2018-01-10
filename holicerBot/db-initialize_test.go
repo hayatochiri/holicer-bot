@@ -30,7 +30,7 @@ func openDBonMemory(t *testing.T) {
 	}
 }
 
-func expectTable(t *testing.T, db *sql.DB, table_name string, expect_definitions map[string]tableDefinitions) error {
+func expectTable(t *testing.T, table_name string, expect_definitions map[string]tableDefinitions) error {
 	var actual_cid int
 	var actual_name string
 	var actual_type string
@@ -100,7 +100,7 @@ func expectTable(t *testing.T, db *sql.DB, table_name string, expect_definitions
 	return nil
 }
 
-func expectTablesList(t *testing.T, db *sql.DB, expect_tables []string) error {
+func expectTablesList(t *testing.T, expect_tables []string) error {
 	t.Log("Check if the tables matches the list %v", expect_tables)
 
 	query := `select name from sqlite_master where type='table';`
@@ -142,24 +142,24 @@ func expectTablesList(t *testing.T, db *sql.DB, expect_tables []string) error {
 }
 
 func TestInitializeDB(t *testing.T) {
-	db := openDBonMemory(t)
+	openDBonMemory(t)
 	defer db.Close()
 
-	if err := initializeDB(db); err != nil {
+	if err := initializeDB(); err != nil {
 		t.Fatalf("Error occurred when initializeDB() (%v)", err)
 	}
 }
 
 func TestCreateDB(t *testing.T) {
-	db := openDBonMemory(t)
+	openDBonMemory(t)
 	defer db.Close()
 
-	if err := createDB(db); err != nil {
+	if err := createDB(); err != nil {
 		t.Fatalf("Error occurred when createDB() (%v)", err)
 	}
 
 	expectTable(
-		t, db, `master`,
+		t, `master`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`db_version`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -167,31 +167,31 @@ func TestCreateDB(t *testing.T) {
 	)
 
 	expectTablesList(
-		t, db,
+		t,
 		[]string{`master`},
 	)
 
 }
 
 func TestUpdateDBv1(t *testing.T) {
-	db := openDBonMemory(t)
+	openDBonMemory(t)
 	defer db.Close()
 
-	if err := createDB(db); err != nil {
+	if err := createDB(); err != nil {
 		t.Fatalf("Error occurred when createDB() (%v)", err)
 	}
 
-	if err := updateDBv1(db); err != nil {
+	if err := updateDBv1(); err != nil {
 		t.Fatalf("Error occurred when updateDB() (%v)", err)
 	}
 
 	expectTablesList(
-		t, db,
+		t,
 		[]string{`master`, `taverns`, `groups`, `users`, `menus`, `users_log`, `leave_log`, `orders_log`},
 	)
 
 	expectTable(
-		t, db, `master`,
+		t, `master`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`db_version`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -199,7 +199,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `taverns`,
+		t, `taverns`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`name_jp`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
@@ -209,7 +209,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `groups`,
+		t, `groups`,
 		map[string]tableDefinitions{
 			`id`:           {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`uuid`:         {Type: `text`, Notnull: TRUE, Dflt_value: ``},
@@ -224,7 +224,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `users`,
+		t, `users`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`twitter_id`: {Type: `text`, Notnull: FALSE, Dflt_value: ``},
@@ -237,7 +237,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `menus`,
+		t, `menus`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`tavern_id`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -250,7 +250,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `users_log`,
+		t, `users_log`,
 		map[string]tableDefinitions{
 			`id`:        {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`user_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -261,7 +261,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `leave_log`,
+		t, `leave_log`,
 		map[string]tableDefinitions{
 			`id`:          {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`user_log_id`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -270,7 +270,7 @@ func TestUpdateDBv1(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `orders_log`,
+		t, `orders_log`,
 		map[string]tableDefinitions{
 			`id`:        {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`user_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -285,24 +285,24 @@ func TestUpdateDBv1(t *testing.T) {
 }
 
 func TestUpdateDB(t *testing.T) {
-	db := openDBonMemory(t)
+	openDBonMemory(t)
 	defer db.Close()
 
-	if err := createDB(db); err != nil {
+	if err := createDB(); err != nil {
 		t.Fatalf("Error occurred when createDB() (%v)", err)
 	}
 
-	if err := updateDB(db); err != nil {
+	if err := updateDB(); err != nil {
 		t.Fatalf("Error occurred when updateDB() (%v)", err)
 	}
 
 	expectTablesList(
-		t, db,
+		t,
 		[]string{`master`, `taverns`, `groups`, `users`, `menus`, `users_log`, `leave_log`, `orders_log`},
 	)
 
 	expectTable(
-		t, db, `master`,
+		t, `master`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`db_version`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -310,7 +310,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `taverns`,
+		t, `taverns`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`name_jp`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
@@ -320,7 +320,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `groups`,
+		t, `groups`,
 		map[string]tableDefinitions{
 			`id`:           {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`uuid`:         {Type: `text`, Notnull: TRUE, Dflt_value: ``},
@@ -335,7 +335,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `users`,
+		t, `users`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`twitter_id`: {Type: `text`, Notnull: FALSE, Dflt_value: ``},
@@ -348,7 +348,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `menus`,
+		t, `menus`,
 		map[string]tableDefinitions{
 			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`tavern_id`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -361,7 +361,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `users_log`,
+		t, `users_log`,
 		map[string]tableDefinitions{
 			`id`:        {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`user_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -372,7 +372,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `leave_log`,
+		t, `leave_log`,
 		map[string]tableDefinitions{
 			`id`:          {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`user_log_id`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
@@ -381,7 +381,7 @@ func TestUpdateDB(t *testing.T) {
 	)
 
 	expectTable(
-		t, db, `orders_log`,
+		t, `orders_log`,
 		map[string]tableDefinitions{
 			`id`:        {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
 			`user_id`:   {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
