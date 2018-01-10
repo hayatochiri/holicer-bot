@@ -20,14 +20,14 @@ type tableDefinitions struct {
 	Dflt_value string
 }
 
-func openDBonMemory(t *testing.T) *sql.DB {
-	db, err := sql.Open("sqlite3", ":memory:")
+func openDBonMemory(t *testing.T) {
+	var err error
+
+	db, err = sql.Open("sqlite3", ":memory:")
 
 	if err != nil {
 		t.Fatalf("Error occurred when sql.Open() (%v)", err)
 	}
-
-	return db
 }
 
 func expectTable(t *testing.T, db *sql.DB, table_name string, expect_definitions map[string]tableDefinitions) error {
