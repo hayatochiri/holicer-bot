@@ -19,7 +19,7 @@ func Initialize() {
 		os.Exit(-1)
 	}
 
-	err = initializeDB(db)
+	err = initializeDB()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
@@ -30,15 +30,15 @@ func Finalize() {
 	db.Close()
 }
 
-func initializeDB(db *sql.DB) error {
+func initializeDB() error {
 	var err error
 
-	err = createDB(db)
+	err = createDB()
 	if err != nil {
 		return err
 	}
 
-	err = updateDB(db)
+	err = updateDB()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func initializeDB(db *sql.DB) error {
 	return nil
 }
 
-func createDB(db *sql.DB) error {
+func createDB() error {
 	var err error
 
 	tx, err := db.Begin()
@@ -77,7 +77,7 @@ func createDB(db *sql.DB) error {
 	return nil
 }
 
-func updateDB(db *sql.DB) error {
+func updateDB() error {
 	var err error
 
 	var db_version int
@@ -92,7 +92,7 @@ func updateDB(db *sql.DB) error {
 
 		switch db_version {
 		case 0:
-			err = updateDBv1(db)
+			err = updateDBv1()
 		default:
 			already_updated = true
 			err = nil
@@ -106,7 +106,7 @@ func updateDB(db *sql.DB) error {
 	return nil
 }
 
-func updateDBv1(db *sql.DB) error {
+func updateDBv1() error {
 	var err error
 
 	tx, err := db.Begin()
