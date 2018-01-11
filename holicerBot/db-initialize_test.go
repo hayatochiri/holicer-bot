@@ -7,11 +7,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-const (
-	FALSE int = 0
-	TRUE  int = 1
-)
-
 var TO_BOOL map[int]string = map[int]string{0: `FALSE`, 1: `TRUE`}
 
 type tableDefinitions struct {

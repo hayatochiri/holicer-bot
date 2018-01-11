@@ -8,6 +8,11 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+const (
+	FALSE int = 0
+	TRUE  int = 1
+)
+
 var db *sql.DB
 
 func Initialize() {
