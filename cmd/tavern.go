@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/hayatochiri/holicer-bot/holicerBot"
 	"github.com/spf13/cobra"
 )
 
