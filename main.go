@@ -17,4 +17,6 @@ func main() {
 	}
 
 	holicerBot.Finalize()
+
+	os.Exit(0)
 }
