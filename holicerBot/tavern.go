@@ -4,6 +4,13 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type Tavern struct {
+	Id        int
+	NameJA    string
+	NameEN    string
+	IsRemoved int
+}
+
 func AddTavern(name_ja, name_en string) (int64, error) {
 	var err error
 
