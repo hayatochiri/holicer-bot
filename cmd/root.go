@@ -9,6 +9,7 @@ var RootCmd = &cobra.Command{
 	Short: "Holicer bot",
 	Long:  "Holicer bot",
 	Run: func(cmd *cobra.Command, args []string) {
+		cmd.Help()
 	},
 }
 
