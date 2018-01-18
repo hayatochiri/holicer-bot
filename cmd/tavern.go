@@ -13,7 +13,12 @@ type tavernAddOpts struct {
 	en string
 }
 
+type tavernListOpts struct {
+	removed bool
+}
+
 var tavern_add_opts tavernAddOpts
+var tavern_list_opts tavernListOpts
 
 var tavernCmd = &cobra.Command{
 	Use:   "tavern",
@@ -43,10 +48,31 @@ var tavernAddCmd = &cobra.Command{
 	},
 }
 
+var tavernListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "Get list of taverns from database.",
+	Long:  `Get list of taverns from database.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		taverns_list, err := holicerBot.GetTavernsList(holicerBot.GetTavernsListParams{IsRemoved: tavern_list_opts.removed})
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error occurred while getting list of taverns.")
+			os.Exit(1)
+		}
+
+		fmt.Println(`ID | Name(ja) | Name(en)`)
+		for _, t := range taverns_list {
+			fmt.Println(t.Id, `|`, t.NameJA, `|`, t.NameEN)
+		}
+	},
+}
+
 func init() {
 	tavernAddCmd.Flags().StringVarP(&tavern_add_opts.ja, "name-ja", "j", "", "Name of tavern(Japanese)")
 	tavernAddCmd.Flags().StringVarP(&tavern_add_opts.en, "name-en", "e", "", "Name of tavern(English)")
 
+	tavernListCmd.Flags().BoolVarP(&tavern_list_opts.removed, "removed", "r", false, "Show removed taverns")
+
 	RootCmd.AddCommand(tavernCmd)
 	tavernCmd.AddCommand(tavernAddCmd)
+	tavernCmd.AddCommand(tavernListCmd)
 }
