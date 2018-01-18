@@ -40,3 +40,25 @@ func AddTavern(name_ja, name_en string) (int64, error) {
 
 	return inserted_id, nil
 }
+
+type GetTavernsListParams struct {
+	IsRemoved bool
+}
+
+func GetTavernsList(params GetTavernsListParams) ([]Tavern, error) {
+	var taverns_list []Tavern
+	var tavern_row Tavern
+	query := `select * from taverns where is_removed = ?`
+
+	rows, err := db.Query(query, map[bool]int{true: TRUE, false: FALSE}[params.IsRemoved])
+	if err != nil {
+		return []Tavern{}, nil
+	}
+
+	for rows.Next() {
+		rows.Scan(&tavern_row.Id, &tavern_row.NameJA, &tavern_row.NameEN, &tavern_row.IsRemoved)
+		taverns_list = append(taverns_list, tavern_row)
+	}
+
+	return taverns_list, nil
+}
