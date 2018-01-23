@@ -5,7 +5,7 @@ import (
 )
 
 type Tavern struct {
-	Id        int
+	Id        int64
 	NameJA    string
 	NameEN    string
 	IsRemoved int
