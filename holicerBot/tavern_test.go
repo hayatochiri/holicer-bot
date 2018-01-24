@@ -29,3 +29,41 @@ func (actual Tavern) compare(t *testing.T, expect Tavern) {
 		t.Errorf(output)
 	}
 }
+
+func TestAddTavern(t *testing.T) {
+	openDBonMemory(t)
+	defer db.Close()
+
+	if err := initializeDB(); err != nil {
+		t.Fatalf("Error occurred when initializeDB() (%v)", err)
+	}
+
+	var actual Tavern
+	expect := Tavern{
+		NameJA:    `居酒屋`,
+		NameEN:    `Tavern`,
+		IsRemoved: FALSE,
+	}
+
+	if err := createDB(); err != nil {
+		t.Fatalf("Error occurred when createDB() (%v)", err)
+	}
+
+	if err := updateDB(); err != nil {
+		t.Fatalf("Error occurred when updateDB() (%v)", err)
+	}
+
+	inserted_id, err := AddTavern("居酒屋", "Tavern")
+	if err != nil {
+		t.Fatalf("Error occurred when AddTavern() (%v)", err)
+	}
+
+	query := `select * from taverns where id = ?`
+	row := db.QueryRow(query, inserted_id)
+
+	row.Scan(&actual.Id, &actual.NameJA, &actual.NameEN, &actual.IsRemoved)
+	expect.Id = inserted_id
+
+	t.Logf("Inserted record.")
+	actual.compare(t, expect)
+}
