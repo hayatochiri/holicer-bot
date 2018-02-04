@@ -53,7 +53,7 @@ func TestAddTavern(t *testing.T) {
 		t.Fatalf("Error occurred when updateDB() (%v)", err)
 	}
 
-	inserted_id, err := AddTavern("居酒屋", "Tavern")
+	inserted_id, err := AddTavern(AddTavernParams{NameJA: `居酒屋`, NameEN: `Tavern`})
 	if err != nil {
 		t.Fatalf("Error occurred when AddTavern() (%v)", err)
 	}
@@ -61,7 +61,7 @@ func TestAddTavern(t *testing.T) {
 	query := `select * from taverns where id = ?`
 	row := db.QueryRow(query, inserted_id)
 
-	row.Scan(&actual.Id, &actual.NameJA, &actual.NameEN, &actual.IsRemoved)
+	row.Scan(&actual.Id, &actual.NameJA, &actual.NameEN, &actual.Description, &actual.Locate, &actual.Homepage, &actual.IsRemoved)
 	expect.Id = inserted_id
 
 	t.Logf("Inserted record.")
