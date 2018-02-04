@@ -123,10 +123,13 @@ func updateDBv1() error {
 		update master set db_version = 1 where id = 1;
 
 		create table taverns (
-			id         integer primary key autoincrement,
-			name_jp    text    null,
-			name_en    text    null,
-			is_removed integer not null
+			id          integer primary key autoincrement,
+			name_jp     text    null,
+			name_en     text    null,
+			description text    not null,
+			locate      text    not null,
+			homepage    text    not null,
+			is_removed  integer not null
 		);
 
 		create table groups (
