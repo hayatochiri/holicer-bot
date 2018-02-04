@@ -5,10 +5,13 @@ import (
 )
 
 type Tavern struct {
-	Id        int64
-	NameJA    string
-	NameEN    string
-	IsRemoved int
+	Id          int64
+	NameJA      string
+	NameEN      string
+	Description string
+	Locate      string
+	Homepage    string
+	IsRemoved   int
 }
 
 func AddTavern(name_ja, name_en string) (int64, error) {
