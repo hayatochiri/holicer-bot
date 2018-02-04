@@ -196,10 +196,13 @@ func TestUpdateDBv1(t *testing.T) {
 	expectTable(
 		t, `taverns`,
 		map[string]tableDefinitions{
-			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
-			`name_jp`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
-			`name_en`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
-			`is_removed`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`id`:          {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`name_jp`:     {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`name_en`:     {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`description`: {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`locate`:      {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`homepage`:    {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`is_removed`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
 		},
 	)
 
@@ -307,10 +310,13 @@ func TestUpdateDB(t *testing.T) {
 	expectTable(
 		t, `taverns`,
 		map[string]tableDefinitions{
-			`id`:         {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
-			`name_jp`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
-			`name_en`:    {Type: `text`, Notnull: FALSE, Dflt_value: ``},
-			`is_removed`: {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
+			`id`:          {Type: `integer`, Notnull: FALSE, Dflt_value: ``},
+			`name_jp`:     {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`name_en`:     {Type: `text`, Notnull: FALSE, Dflt_value: ``},
+			`description`: {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`locate`:      {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`homepage`:    {Type: `text`, Notnull: TRUE, Dflt_value: ``},
+			`is_removed`:  {Type: `integer`, Notnull: TRUE, Dflt_value: ``},
 		},
 	)
 
