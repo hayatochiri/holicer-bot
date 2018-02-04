@@ -31,10 +31,11 @@ func AddTavern(params AddTavernParams) (int64, error) {
 	}
 
 	query := `
-		insert into taverns (name_jp, name_en, is_removed)
-		values (?, ?, ?);
+		insert into taverns (name_jp, name_en, description, locate, homepage, is_removed)
+		values (?, ?, ?, ?, ?, ?);
 	`
-	result, err := tx.Exec(query, name_ja, name_en, FALSE)
+
+	result, err := tx.Exec(query, params.NameJA, params.NameEN, params.Description, params.Locate, params.Homepage, FALSE)
 	if err != nil {
 		return 0, err
 	}
