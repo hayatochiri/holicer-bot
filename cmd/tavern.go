@@ -40,7 +40,7 @@ var tavernAddCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		_, err := holicerBot.AddTavern(tavern_add_opts.ja, tavern_add_opts.en)
+		_, err := holicerBot.AddTavern(holicerBot.AddTavernParams{NameJA: tavern_add_opts.ja, NameEN: tavern_add_opts.en})
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error occurred while addming tavern.")
 			os.Exit(1)
