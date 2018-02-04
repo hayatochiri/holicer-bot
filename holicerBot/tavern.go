@@ -14,7 +14,15 @@ type Tavern struct {
 	IsRemoved   int
 }
 
-func AddTavern(name_ja, name_en string) (int64, error) {
+type AddTavernParams struct {
+	NameJA      string
+	NameEN      string
+	Description string
+	Locate      string
+	Homepage    string
+}
+
+func AddTavern(params AddTavernParams) (int64, error) {
 	var err error
 
 	tx, err := db.Begin()
