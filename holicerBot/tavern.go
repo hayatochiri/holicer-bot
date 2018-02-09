@@ -76,3 +76,34 @@ func GetTavernsList(params GetTavernsListParams) ([]Tavern, error) {
 
 	return taverns_list, nil
 }
+
+func RemoveTavern(remove_id int64) (bool, error) {
+
+	query := `update taverns set is_removed = ? where id = ? and is_removed = ?`
+
+	tx, err := db.Begin()
+	if err != nil {
+		return false, err
+	}
+
+	result, err := tx.Exec(query, TRUE, remove_id, FALSE)
+	if err != nil {
+		return false, err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return false, err
+	}
+
+	is_removed, err := result.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+
+	if is_removed >= 2 {
+		return false, errors.New("[Unexpected] More than one tavern has been removed.")
+	}
+
+	return map[int64]bool{0: false, 1: true}[is_removed], nil
+}
