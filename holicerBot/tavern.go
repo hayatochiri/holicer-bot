@@ -1,6 +1,8 @@
 package holicerBot
 
 import (
+	"errors"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
