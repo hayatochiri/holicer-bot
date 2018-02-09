@@ -16,6 +16,15 @@ func (actual Tavern) compare(t *testing.T, expect Tavern) {
 	output += "\tNameEN\n"
 	output += fmt.Sprintf("\t\tactual : \"%s\"\n", actual.NameEN)
 	output += fmt.Sprintf("\t\texpect : \"%s\"\n", expect.NameEN)
+	output += "\tDescription\n"
+	output += fmt.Sprintf("\t\tactual : \"%s\"\n", actual.Description)
+	output += fmt.Sprintf("\t\texpect : \"%s\"\n", expect.Description)
+	output += "\tLocate\n"
+	output += fmt.Sprintf("\t\tactual : \"%s\"\n", actual.Locate)
+	output += fmt.Sprintf("\t\texpect : \"%s\"\n", expect.Locate)
+	output += "\tHomepage\n"
+	output += fmt.Sprintf("\t\tactual : \"%s\"\n", actual.Homepage)
+	output += fmt.Sprintf("\t\texpect : \"%s\"\n", expect.Homepage)
 	output += "\tIsRemoved\n"
 	output += "\t\tactual : " + TO_BOOL[actual.IsRemoved] + "\n"
 	output += "\t\texpect : " + TO_BOOL[expect.IsRemoved] + "\n"
@@ -23,6 +32,9 @@ func (actual Tavern) compare(t *testing.T, expect Tavern) {
 	if actual.Id == expect.Id &&
 		actual.NameJA == expect.NameJA &&
 		actual.NameEN == expect.NameEN &&
+		actual.Description == expect.Description &&
+		actual.Locate == expect.Locate &&
+		actual.Homepage == expect.Homepage &&
 		actual.IsRemoved == expect.IsRemoved {
 		t.Logf(output)
 	} else {
