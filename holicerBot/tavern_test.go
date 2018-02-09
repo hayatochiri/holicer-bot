@@ -51,10 +51,17 @@ func TestAddTavern(t *testing.T) {
 	}
 
 	var actual Tavern
-	expect := Tavern{
-		NameJA:    `居酒屋`,
-		NameEN:    `Tavern`,
-		IsRemoved: FALSE,
+	expects := []Tavern{
+		{NameJA: `居酒屋(No.1)`, NameEN: `Tavern(No.1)`, Description: `詳細01`, Locate: `場所001`, Homepage: `https://www.test.tavern1.local`},
+		{NameJA: `居酒屋(No.2)`},
+		{NameEN: `Tavern(No.3)`},
+		{NameJA: `居酒屋(No.4)`, NameEN: `Tavern(No.4)`, Description: `詳細04`, Locate: `場所004`, Homepage: `https://www.test.tavern4.local`},
+		{NameJA: `居酒屋(No.5)`, NameEN: `Tavern(No.5)`},
+		{NameJA: `居酒屋(No.6)`, Description: `詳細06`, Locate: `場所006`, Homepage: `https://www.test.tavern6.local`},
+		{NameEN: `Tavern(No.7)`, Description: `詳細07`, Locate: `場所007`, Homepage: `https://www.test.tavern7.local`},
+		{NameJA: `居酒屋(No.8)`, NameEN: `Tavern(No.8)`, Description: `詳細08`, Locate: `場所008`, Homepage: `https://www.test.tavern8.local`},
+		{NameJA: `居酒屋(No.9)`, NameEN: `Tavern(No.9)`, Description: `詳細09`, Locate: `場所009`, Homepage: `https://www.test.tavern9.local`},
+		{NameJA: `居酒屋(No.10)`, NameEN: `Tavern(No.10)`, Description: `詳細10`, Locate: `場所010`, Homepage: `https://www.test.tavern10.local`},
 	}
 
 	if err := createDB(); err != nil {
@@ -65,17 +72,27 @@ func TestAddTavern(t *testing.T) {
 		t.Fatalf("Error occurred when updateDB() (%v)", err)
 	}
 
-	inserted_id, err := AddTavern(AddTavernParams{NameJA: `居酒屋`, NameEN: `Tavern`})
-	if err != nil {
-		t.Fatalf("Error occurred when AddTavern() (%v)", err)
+	for _, expect := range expects {
+		_, err := AddTavern(AddTavernParams{
+			NameJA:      expect.NameJA,
+			NameEN:      expect.NameEN,
+			Description: expect.Description,
+			Locate:      expect.Locate,
+			Homepage:    expect.Homepage,
+		})
+		if err != nil {
+			t.Fatalf("Error occurred when AddTavern() (%v)", err)
+		}
 	}
 
+	t.Logf("Inserted records.")
 	query := `select * from taverns where id = ?`
-	row := db.QueryRow(query, inserted_id)
+	for id, expect := range expects {
+		expect.Id = int64(id) + 1
+		row := db.QueryRow(query, expect.Id)
+		row.Scan(&actual.Id, &actual.NameJA, &actual.NameEN, &actual.Description, &actual.Locate, &actual.Homepage, &actual.IsRemoved)
+		expect.IsRemoved = FALSE
 
-	row.Scan(&actual.Id, &actual.NameJA, &actual.NameEN, &actual.Description, &actual.Locate, &actual.Homepage, &actual.IsRemoved)
-	expect.Id = inserted_id
-
-	t.Logf("Inserted record.")
-	actual.compare(t, expect)
+		actual.compare(t, expect)
+	}
 }
