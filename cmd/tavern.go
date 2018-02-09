@@ -67,6 +67,27 @@ var tavernListCmd = &cobra.Command{
 	},
 }
 
+var tavernRemoveCmd = &cobra.Command{
+	Use:   "remove",
+	Short: "Remove list of taverns from database.",
+	Long:  `Remove list of taverns from database.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		for _, arg := range args {
+			arg_i, _ := strconv.ParseInt(arg, 10, 64)
+			is_removed, err := holicerBot.RemoveTavern(arg_i)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error occurred while removeing tavern.")
+				os.Exit(1)
+			}
+
+			if !is_removed {
+				fmt.Fprintf(os.Stderr, "Tavern(ID:%d) has already been removed.", arg_i)
+				os.Exit(1)
+			}
+		}
+	},
+}
+
 func init() {
 	tavernAddCmd.Flags().StringVarP(&tavern_add_opts.ja, "name-ja", "j", "", "Name of tavern(Japanese)")
 	tavernAddCmd.Flags().StringVarP(&tavern_add_opts.en, "name-en", "e", "", "Name of tavern(English)")
@@ -76,4 +97,5 @@ func init() {
 	RootCmd.AddCommand(tavernCmd)
 	tavernCmd.AddCommand(tavernAddCmd)
 	tavernCmd.AddCommand(tavernListCmd)
+	tavernCmd.AddCommand(tavernRemoveCmd)
 }
