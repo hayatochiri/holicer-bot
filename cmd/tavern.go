@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/hayatochiri/holicer-bot/holicerBot"
 	"github.com/spf13/cobra"
